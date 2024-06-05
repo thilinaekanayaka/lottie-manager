@@ -1,6 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import RenderAnimation from './RenderAnimation';
+import { useMutation, gql } from '@apollo/client';
+
+const UPLOAD_ANIMATION = gql`
+  mutation uploadAnimation($name: String!, $data: String!) {
+    uploadAnimation(name: $name, data: $data) {
+      id
+      name
+      data
+    }
+  }
+`;
 
 function App() {
   const [animationURLFromInput, setAnimationURLFromInput] = useState('');
@@ -8,6 +19,8 @@ function App() {
   const [animationType, setAnimationType] = useState('');
   // const animationJSONPath = require('./testAnimation.json');
   // console.log(animationPath)
+
+  const [uploadAnimation] = useMutation(UPLOAD_ANIMATION);
 
   const previewAnimation = () => {
     const animationJSON = localStorage.getItem(animationURLFromInput);
@@ -24,7 +37,9 @@ function App() {
     try {
       let response = await fetch(animationURLFromInput);
       let responseJson = await response.json();
-      localStorage.setItem(animationURLFromInput, JSON.stringify(responseJson));
+      const JSONStringFromResponse = JSON.stringify(responseJson)
+      localStorage.setItem(animationURLFromInput, JSONStringFromResponse); // key & value
+      await uploadAnimation({ variables: { name: animationURLFromInput, data: JSONStringFromResponse } });
     } catch (error) {
       console.error(error);
     }
@@ -32,7 +47,7 @@ function App() {
 
   return (
     <div>
-      <div style={{ width: '50%' }}>
+      <div>
         <input
           name="animation-url"
           placeholder="Paste the animation URL..."
@@ -43,7 +58,7 @@ function App() {
         <button onClick={saveAnimation}>Make available offline</button>
         <RenderAnimation animationSource={animationSource} animationType={animationType} />
       </div>
-      <div style={{ width: '50%' }}>
+      <div>
         test
       </div>
     </div>
