@@ -4,13 +4,24 @@ import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 const RenderAnimation = (props: any) => {
   return (
     <>
-      <DotLottieReact
-        key={props.animationPath}
-        src={props.animationPath}
-        // data={props.animationPath}
-        loop
-        autoplay
-      />
+      {
+        props.animationType === 'json' &&
+        <DotLottieReact
+          key={props.animationSource}
+          data={props.animationSource}
+          loop
+          autoplay
+        />
+      }
+      {
+        props.animationType === 'url' &&
+        <DotLottieReact
+          key={props.animationSource}
+          src={props.animationSource}
+          loop
+          autoplay
+        />
+      }
     </>
   )
 }
