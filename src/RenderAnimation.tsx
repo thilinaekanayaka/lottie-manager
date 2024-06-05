@@ -1,13 +1,13 @@
 import React from "react";
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
-const RenderAnimation = () => {
-  let testJSON = require('./test.json');
+const RenderAnimation = (props: any) => {
   return (
     <>
       <DotLottieReact
-        // src='http://test.com'
-        data={testJSON}
+        key={props.animationPath}
+        src={props.animationPath}
+        // data={props.animationPath}
         loop
         autoplay
       />
