@@ -25,8 +25,6 @@ function App() {
   const previewAnimation = () => {
     const animationJSON = localStorage.getItem(animationURLFromInput);
     if (animationJSON) {
-      setAnimationSource(JSON.parse(animationJSON));
-      setAnimationType('json');
     } else {
       setAnimationSource(animationURLFromInput)
       setAnimationType('url');
@@ -49,17 +47,15 @@ function App() {
     <div>
       <div>
         <input
+          className='animation-url'
           name="animation-url"
           placeholder="Paste the animation URL..."
           value={animationURLFromInput}
           onChange={(e) => setAnimationURLFromInput(e.target.value)}
         />
-        <button onClick={previewAnimation}>Preview</button>
-        <button onClick={saveAnimation}>Make available offline</button>
+        <button className='btn' onClick={previewAnimation}>Preview</button>
+        <button className='btn' onClick={saveAnimation}>Make available offline</button>
         <RenderAnimation animationSource={animationSource} animationType={animationType} />
-      </div>
-      <div>
-        test
       </div>
     </div>
   );
